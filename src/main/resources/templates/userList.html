@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="/js/jquery.min.js" ></script>
+    <script src="/js/jquery.page.js" ></script>
+    <div class="pageTemplate"></div>
+</head>
+<body>
+<script  type="text/javascript"  th:inline="javascript">
+    /*<![CDATA[*/
+    $(".pageTemplate").createPage({
+        pageCount: [[${pageCount}]],
+        current: [[${pageNo}]],
+        backFn: function(pageNo) {
+            searchQuery(pageNo);
+        }
+    });
+    //查询方法
+    function searchQuery(pageNo) {
+        window.location.href="/userList?pageNo="+pageNo;
+    }
+    /*]]>*/
+    /*
+ js html是一个体系。所以html标签可以转化成js语句 DOM
+ jquery 和js html不是一个体系
+ thymeleaf
+ */
+
+    //灰星星点了我会add，然后灰星星消失，显示红星星
+    function addStar(id,getId)
+    {
+        var mm="#starNums"+id;
+        $.get("/star/addByGetId", {getId: getId}, function (result) {
+            $(mm).html(result);
+        });
+        hui="#picHui"+id;
+        $(hui).toggle();
+        red="#picRed"+id;
+        $(red).show();
+    }
+//红星星点了我会sub，然后红星星消失，显示灰星星
+    function subStar(id,getId)
+    {
+        var mm="#starNums"+id;
+        $.get("/star/deleteByGetId", {getId: getId}, function (result) {
+            $(mm).html(result);
+        });
+        hui="#picHui"+id;
+        $(hui).show();
+        red="#picRed"+id;
+        $(red).toggle();
+    }
+
+</script>
+<table width="720" align="center" border="0">
+    <tr >
+        <td th:colspan="4">
+            用户信息表
+        </td>
+        <td th:colspan="5">
+            点赞过我的用户：<a th:href="@{'/starLoginer'}" th:text="${session.loginUser.numsStarMe}">
+        </td>
+    </tr>
+    <tr>
+        <td width="100">id</td>
+        <td width="100">name</td>
+        <td width="100">password</td>
+        <td width="100">age</td>
+        <td width="100">email</td>
+        <td width="100">birth</td>
+        <td width="100">issingle</td>
+        <td width="10">
+            给他点赞
+        </td>
+        <td width="10">点赞数</td>
+    </tr>
+    <tr th:each="user,userStat : ${page.records}" th:bgcolor="${userStat.even}?'#eeeeee':'#ffffff'">
+        <td><a th:href="@{'/userDetail?id=' + ${user.id}}" th:text="${user.id}"></td>
+        <td><a th:href="@{'/userDetail?id=' + ${user.id}}" th:text="${user.name}"></td>
+        <td th:text="${user.password}"></td>
+        <td th:text="${user.age}"></td>
+        <td th:text="${user.email}"></td>
+        <td th:text="${user.birth}"></td>
+        <td th:text="${user.issingle}"></td>
+        <td>
+            <img src="/image/红色星星.png"  th:style="${user.isLogerStarMe}?'display:block':'display:none'"  th:id="'picRed'+${userStat.index}"  th:onclick="|javascript:subStar(${userStat.index},${user.id})|">
+            <img src="/image/灰色小星星.png"   th:style="${user.isLogerStarMe}?'display:none':'display:block'" th:id="'picHui'+${userStat.index}"  th:onclick="|javascript:addStar(${userStat.index},${user.id})|">
+        </td>
+        <td>
+            <span th:id="'starNums'+${userStat.index}" th:text="${user.numsStarMe}"></span>
+        </td>
+    </tr>
+</table>
+</body>
+</html>

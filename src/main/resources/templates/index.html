@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Thymeleaf login</title>
+    <link rel="stylesheet" th:href="@{/asserts/css/login.css}">                           <!--把写好的样式引入进来-->
+</head>
+<body>
+<form class="login_main" method="post" th:action="@{/login}"  th:object="${user}">                      <!--th:action="@{/logincheck}":来自后端的请求-->
+    <p class="login_info">登录</p>                                                       <!--相当于标题-->
+    <span  style="color: #ff0000" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
+    <input class="login_textbox" type="text"  th:field="*{name}" placeholder="username" required>   <!--placeholder="username":文本框中的提示 required必填  readonly：只读-->
+    <span  style="color: #ff0000" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></span>
+    <input class="login_textbox" type="password"  th:field="*{password}" placeholder="password" required>
+    <button class="login_btn" type="submit">sign in</button>
+    <p style="color: #ff0000" th:text="${msg}" th:if="${not #strings.isEmpty(msg)}"></p>            <!--登录提示，只有登录出现错误才提示-->
+
+</form>
+</body>
+</html>

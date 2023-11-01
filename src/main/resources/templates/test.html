@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Validation Form Page</title>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+    <link rel="stylesheet" type="text/css" media="all"
+          th:href="@{/css/test.css}" />
+</head>
+<body>
+<div class="content">
+    <div class="formdiv" style="widh: 100%; text-align: center; margin-top: 200px; margin-right: 100px;">
+        <form th:action="@{/test}" method="POST" th:object="${user}">
+            <table align = "center" style = "table-layout: fixed;">
+                <colgroup style="width:100px;"></colgroup>
+                <colgroup style="width:200px;"></colgroup>
+                <colgroup style="width:300px;"></colgroup>
+                <tr><td>[Validation Form]</td></tr>
+                <tr>
+                    <td>
+                        <label for="name">Name:</label>
+                    </td>
+                    <td>
+                        <input type="text" th:field="*{name}" />
+                    </td>
+                    <td>
+                        <span class="validationError" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">name Error</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td><label for="age">Age:</label>
+                    </td>
+                    <td>
+                        <!-- html属性验证必须项目 required="required" -->
+                        <!-- <input type="number" required="required" th:field="*{age}"/> -->
+                        <input type="number" th:field="*{age}" />
+                    </td>
+                    <td>
+                        <span class="validationError" th:if="${#fields.hasErrors('age')}" th:errors="*{age}">age Error</span></td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="creditCardNumber">CreditCardNumber:</label>
+                    </td>
+                    <td>
+                        <input type="text" th:field="*{creditCardNumber}" />
+                    </td>
+                    <td>
+                        <span class="validationError" th:if="${#fields.hasErrors('creditCardNumber')}" th:errors="*{creditCardNumber}">creditCardNumber Error</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="submit" value="submit" />
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</div>
+</body>
+</html>

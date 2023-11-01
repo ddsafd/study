@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.jjmm.study.mapper.StarMapper">
+
+    <!-- 查找用户信息 -->
+    <select id="starMe" resultType="com.jjmm.study.model.User">
+       select u.* from user u,star s where s.getId =#{getId} and u.id=s.sendId
+    </select>
+    <select id="starMeId" resultType="java.lang.Integer">
+       select u.id from user u,star s where s.getId =#{getId} and u.id=s.sendId
+    </select>
+
+    <select id="IStar" resultType="com.jjmm.study.model.User">
+       select u.* from user u,star s where s.sendId =#{sendId} and u.id=s.getId
+    </select>
+
+
+    <insert id="insertStar">
+        insert into star values (#{param1},#{param2},now())
+    </insert>
+
+    <delete id="deleteStar" >
+        delete from star where sendid=#{param1} and getid=#{param2}
+    </delete>
+</mapper>
